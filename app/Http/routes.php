@@ -17,9 +17,10 @@ Route::get('/', function () {
 
 Route::resource('data', 'DataController');
 
-Route::post('users','UsersController@store');
+Route::resource('users','UsersController');
 Route::post('login','UsersController@login');
-Route::get('users/{token}','UsersController@show');
+/* Route::get('users/{token}','UsersController@show'); */
+/* Route::post('users','UsersController@store'); */
 
 Route::get('check', function() {
   return json_encode(array('status'=>'success','Connection succesfully'));
