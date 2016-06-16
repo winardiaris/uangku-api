@@ -17,6 +17,7 @@ class UsersController extends Controller
     public function index()
     {
         //
+        return json_encode(array('status'=>'error','description'=>'token not found'));
     }
 
     public function create()

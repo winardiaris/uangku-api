@@ -56,11 +56,11 @@ class DataController extends Controller
 
     public function store(Request $request)
     {
-
+      //belum kalau duplicate
       if(isset($request->token)){
         $users_id = $this->tokenToId($request->token);
-        Data::create($request->all());
-        
+        $request['users_id']=$users_id;
+        Data::create(array_except($request->all(),'token'));
         return json_encode(array('status'=>'success','description'=>'Data Saved'));
       }else{
         return json_encode(array('status'=>'error','description'=>'token not found'));
