@@ -112,13 +112,18 @@ class DataController extends Controller
     }
 
 
-    public function getSaldo(){//melihatkan saldo semua
-      $users_id =  Auth::user()->id;
+    public function getSaldo(Request $request){//melihatkan saldo semua
+      
+      if(isset($request->token)){
+        $users_id = $this->tokenToId($request->token);
 
-      $in = Data::where('type','in')->where('users_id',$users_id)->select('value')->sum('value');
-      $out = Data::where('type','out')->where('users_id',$users_id)->select('value')->sum('value');
-      $saldo = (int)$in - (int)$out;
-      return $saldo;
+        $in = Data::where('type','in')->where('users_id',$users_id)->select('value')->sum('value');
+        $out = Data::where('type','out')->where('users_id',$users_id)->select('value')->sum('value');
+        $saldo = (int)$in - (int)$out;
+        return json_encode(array('status'=>'success','description'=>'Saldo found','saldo'=>$saldo));
+      }else{
+        return json_encode(array('status'=>'error','description'=>'token not found','saldo'=>0));
+      }
     }
 
     public function getTahunData(){

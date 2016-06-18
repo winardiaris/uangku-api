@@ -25,3 +25,4 @@ Route::post('login','UsersController@login');
 Route::get('check', function() {
   return json_encode(array('status'=>'success','Connection succesfully'));
 });
+Route::get('getsaldo','DataController@getSaldo');

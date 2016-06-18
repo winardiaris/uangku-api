@@ -80,6 +80,20 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+      if(isset($request->token)){
+        $user = User::where('token',$request->token)->where('id',$id)->count();
+        $password = md5(md5($request->password));
+        $request['password']=$password;
+        if($user>0){
+          $data = User::where('id',$id);
+          $data->update($request->except(['token','_method']));
+          return json_encode(array('status'=>'success','description'=>'User Updated'));
+        }else{
+          return json_encode(array('status'=>'error','description'=>'token not found'));
+        }
+      }else{
+        return json_encode(array('status'=>'error','description'=>'token not found'));
+      } 
     }
 
     /**
@@ -116,7 +130,7 @@ class UsersController extends Controller
     }
     
     public function tokenToId($token){
-      $users_id =  User::select('id')->where('token',$token);
+      $users_id =  User::select('id')->where('token',$token)->get();
       return $users_id[0]['id'];
     }
 }
